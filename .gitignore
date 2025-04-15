@@ -1,0 +1,53 @@
+# === CMake build folders ===
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# === Tools ===
+tools/
+
+# === VS Code ===
+.vscode/
+*.code-workspace
+
+# === Windows system ===
+Thumbs.db
+Desktop.ini
+
+# === SDL2 library ===
+libs/
+!libs/.gitkeep
+
+# === ROMs ===
+roms/
+!roms/.gitkeep
+
+# === Doxygen output ===
+docs/
+docs/html/
+docs/latex/
+Doxyfile
+
+# === Compiled binary ===
+*.exe
+*.dll
+*.lib
+*.a
+*.obj
+*.o
+*.pch
+*.pdb
+
+# === Logs and temp ===
+*.log
+*.tmp
+
+# === Mac & Linux system files ===
+.DS_Store
+*.swp
+*~
+
+# === Git ===
+.git/

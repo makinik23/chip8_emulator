@@ -1,0 +1,65 @@
+# ========================
+# Pliki źródłowe C++
+# ========================
+*.cpp      text eol=lf
+*.c        text eol=lf
+*.h        text eol=lf
+*.hpp      text eol=lf
+*.cc       text eol=lf
+*.hh       text eol=lf
+*.inl      text eol=lf
+*.ixx      text eol=lf
+
+# ========================
+# Pliki CMake / Skrypty
+# ========================
+CMakeLists.txt text eol=lf
+*.cmake         text eol=lf
+*.sh            text eol=lf
+*.ps1           text eol=lf
+*.bat           text eol=crlf
+
+# ========================
+# Doxygen / Dokumentacja
+# ========================
+*.md        text eol=lf
+*.txt       text eol=lf
+*.dox       text eol=lf
+
+# ========================
+# Pliki konfiguracyjne
+# ========================
+*.json      text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.toml      text eol=lf
+*.ini       text eol=lf
+
+# ========================
+# Binaria — nie dotykaj
+# ========================
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.ttf       binary
+*.otf       binary
+*.bin       binary
+*.exe       binary
+*.dll       binary
+*.lib       binary
+*.so        binary
+*.a         binary
+*.o         binary
+*.obj       binary
+*.wasm      binary
+
+# ========================
+# Inne pliki bibliotek
+# ========================
+libs/**     text eol=lf
+
+# ========================
+# Systemowe
+# ========================
+*.sln       text eol=crlf
+*.vcxproj   text eol=crlf
