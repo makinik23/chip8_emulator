@@ -442,7 +442,7 @@ namespace chip8
 
                 bool keyPressed = false;
 
-                for (int i = 0; i < 16; i++)
+                for (std::size_t i = 0; i < 16; i++)
                 {
                     if (keypad[i] != 0)
                     {
@@ -489,6 +489,41 @@ namespace chip8
             {
                 I = FONTSET_START_ADDRESS + (V[x] * 5);
                 std::cout << "Instruction: LD F, V" << +x << " → I = " << intToHex(I) << '\n';
+                pc += 2;
+                break;
+            }
+
+            case 0x33: // FX33 - LD B, Vx - stores the binary-coded decimal representation of Vx in memory locations I, I+1, and I+2
+            {
+                std::cout << "Instruction: LD B, V" << +x << '\n';
+                memory[I] = V[x] / 100;           // hundreds place
+                memory[I + 1] = (V[x] / 10) % 10; // tens place
+                memory[I + 2] = V[x] % 10;        // ones place
+                pc += 2;
+                break;
+            }
+
+            case 0x55: // FX55 - LD [I], Vx — Store V0 to Vx in memory starting at I
+            {
+                std::cout << "Instruction: LD [I], V" << +x << '\n';
+
+                for (std::size_t i = 0; i <= x; ++i)
+                {
+                    memory[I + i] = V[i];
+                }
+
+                pc += 2;
+                break;
+            }
+
+            case 0x65: // FX65 - LD Vx, [I]
+            {
+                std::cout << "Instruction: LD V" << +x << ", [I]\n";
+                for (std::size_t i = 0; i <= x; ++i)
+                {
+                    V[i] = memory[I + i];
+                }
+                // I unchanged
                 pc += 2;
                 break;
             }
