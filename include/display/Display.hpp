@@ -26,7 +26,7 @@ namespace display
         void Clear() override;
         void Render(const std::uint8_t *gfx) override;
         bool IsRunning() const override;
-        void HandleEvents() override;
+        void HandleEvents(std::uint8_t *keypad) override;
 
     private:
         SDL_Window *window = nullptr;

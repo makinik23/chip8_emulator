@@ -17,7 +17,7 @@ inline static int Run(std::unique_ptr<display::IDisplay> display, std::unique_pt
             chip->ClearDrawFlag();
         }
 
-        display->HandleEvents();
+        display->HandleEvents(chip->GetKeypad());
     }
 
     return 0;

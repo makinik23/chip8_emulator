@@ -68,6 +68,11 @@ namespace chip8
         std::cout << "ROM loaded: " << filename << " (" << size << " bytes)" << std::endl;
     }
 
+    std::uint8_t *Chip8::GetKeypad()
+    {
+        return keypad.data();
+    }
+
     void Chip8::emulateCycle()
     {
 

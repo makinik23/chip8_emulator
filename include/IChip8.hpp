@@ -45,6 +45,12 @@ namespace chip8
         virtual void ClearDrawFlag() = 0;
 
         /**
+         * @brief Returns a pointer to the keypad buffer.
+         * @return Pointer to the keypad buffer (16 keys).
+         */
+        virtual std::uint8_t *GetKeypad() = 0;
+
+        /**
          * @brief Destructor.
          */
         virtual ~IChip() = default;

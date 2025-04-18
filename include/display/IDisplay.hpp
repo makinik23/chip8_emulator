@@ -20,7 +20,7 @@ namespace display
         /**
          * @brief Handles the system events.
          */
-        virtual void HandleEvents() = 0;
+        virtual void HandleEvents(std::uint8_t *keypad) = 0;
 
         /**
          * @brief Clears the display.

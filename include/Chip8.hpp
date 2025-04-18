@@ -26,6 +26,7 @@ namespace chip8
         bool ShouldDraw() const override;
         void ClearDrawFlag() override;
         const std::uint8_t *GetGfx() const override;
+        std::uint8_t *GetKeypad() override;
 
     private:
         /**
