@@ -40,6 +40,24 @@ namespace chip8
         }
     }
 
+    void Chip8::UpdateTimers()
+    {
+        if (delay_timer > 0)
+        {
+            --delay_timer;
+        }
+
+        if (sound_timer > 0)
+        {
+            --sound_timer;
+        }
+    }
+
+    std::uint8_t Chip8::GetSoundTimer() const
+    {
+        return sound_timer;
+    }
+
     void Chip8::loadROM(const std::string &filename)
     {
         reset();

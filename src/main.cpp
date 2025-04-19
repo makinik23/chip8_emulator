@@ -7,8 +7,12 @@
 
 inline static int Run(std::unique_ptr<display::IDisplay> display, std::unique_ptr<chip8::IChip> chip) // Change if needed
 {
+    const int cycleDelayMs = 4;
+
     while (display->IsRunning())
     {
+        Uint32 frameStart = SDL_GetTicks();
+
         chip->emulateCycle();
 
         if (chip->ShouldDraw())
@@ -18,6 +22,19 @@ inline static int Run(std::unique_ptr<display::IDisplay> display, std::unique_pt
         }
 
         display->HandleEvents(chip->GetKeypad());
+        chip->UpdateTimers();
+
+        if (chip->GetSoundTimer() > 0)
+        {
+            display->Beep();
+        }
+
+        Uint32 frameTime = SDL_GetTicks() - frameStart;
+
+        if (frameTime < cycleDelayMs)
+        {
+            SDL_Delay(cycleDelayMs - frameTime);
+        }
     }
 
     return 0;

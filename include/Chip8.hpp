@@ -27,6 +27,8 @@ namespace chip8
         void ClearDrawFlag() override;
         const std::uint8_t *GetGfx() const override;
         std::uint8_t *GetKeypad() override;
+        void UpdateTimers() override;
+        std::uint8_t GetSoundTimer() const override;
 
     private:
         /**

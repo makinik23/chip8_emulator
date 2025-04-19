@@ -35,6 +35,11 @@ namespace display
         virtual void Render(const std::uint8_t *gfx) = 0;
 
         /**
+         * @brief Calls a sound via SDL2.
+         */
+        virtual void Beep() = 0;
+
+        /**
          * @brief Destructor.
          */
         virtual ~IDisplay() = default;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL.h>
+#include <vector>
 
 #include "IDisplay.hpp"
 
@@ -27,10 +28,14 @@ namespace display
         void Render(const std::uint8_t *gfx) override;
         bool IsRunning() const override;
         void HandleEvents(std::uint8_t *keypad) override;
+        void Beep() override;
 
     private:
         SDL_Window *window = nullptr;
         SDL_Renderer *renderer = nullptr;
         bool running = true;
+        SDL_AudioDeviceID audioDevice = 0;
+        SDL_AudioSpec audioSpec{};
+        std::vector<std::uint8_t> audioBuffer;
     };
 }
