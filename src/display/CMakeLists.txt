@@ -1,5 +1,4 @@
 set(DISPLAY_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/Display.cpp
-    # ${CMAKE_CURRENT_SOURCE_DIR}/MockDisplay.cpp
     PARENT_SCOPE
 )

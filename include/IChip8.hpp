@@ -51,6 +51,17 @@ namespace chip8
         virtual std::uint8_t *GetKeypad() = 0;
 
         /**
+         * @brief Updates the delay timer
+         */
+        virtual void UpdateTimers() = 0;
+
+        /**
+         * @brief Returns the current value of the sound timer.
+         * @return Sound timer.
+         */
+        virtual std::uint8_t GetSoundTimer() const = 0;
+
+        /**
          * @brief Destructor.
          */
         virtual ~IChip() = default;

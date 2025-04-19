@@ -28,7 +28,7 @@ namespace chip8
         gfx.fill(0);
         keypad.fill(0);
         I = 0;
-        pc = 0x200; // starting from 0x200
+        pc = 0x200;
         sp = 0;
         delay_timer = 0;
         sound_timer = 0;
@@ -40,10 +40,28 @@ namespace chip8
         }
     }
 
+    void Chip8::UpdateTimers()
+    {
+        if (delay_timer > 0)
+        {
+            --delay_timer;
+        }
+
+        if (sound_timer > 0)
+        {
+            --sound_timer;
+        }
+    }
+
+    std::uint8_t Chip8::GetSoundTimer() const
+    {
+        return sound_timer;
+    }
+
     void Chip8::loadROM(const std::string &filename)
     {
         reset();
-        // opens the file in binary and sets the position at the end
+
         std::ifstream file(filename, std::ios::binary | std::ios::ate);
         if (!file.is_open())
         {
@@ -51,13 +69,10 @@ namespace chip8
             return;
         }
 
-        // checks the size of the file
         std::streamsize size = file.tellg();
 
-        // returns to the beginning of the file
         file.seekg(0, std::ios::beg);
 
-        // ROM begins at 0x200
         if (size > (4096 - 512))
         {
             throw std::runtime_error("ROM too big! Size: " + std::to_string(size) + " bytes. Max size: " + std::to_string(4096 - 512) + " bytes.");
@@ -76,7 +91,7 @@ namespace chip8
     void Chip8::emulateCycle()
     {
 
-        if (pc >= memory.size() - 1) // -1 bo odczytujesz 2 bajty (pc, pc+1)
+        if (pc >= memory.size() - 1)
         {
             throw std::runtime_error("Program counter out of bounds: " + intToHex(pc));
         }
@@ -95,16 +110,16 @@ namespace chip8
             {
             case 0x00E0: // CLS – clean the view
                 std::cout << "Instruction: CLS (clean the view)\n";
-                gfx.fill(0); // clears the screen
+                gfx.fill(0);
                 DrawFlag = true;
                 pc += 2;
                 break;
 
             case 0x00EE: // RET – returns from a subroutine
                 std::cout << "Instruction: RET\n";
-                --sp;           // decrement stack pointer
-                pc = stack[sp]; // returning to the previously saved address
-                pc += 2;        // increment program counter, go to the next instruction
+                --sp;
+                pc = stack[sp];
+                pc += 2;
                 break;
 
             case 0x0000: // NOP - does nothing - TEST FEATURE, NORMALLY NOT USED
@@ -129,9 +144,9 @@ namespace chip8
         case 0x2000:
         { // CALL addr - CALL subroutine at NNN
             std::uint16_t nnn = opcode & 0x0FFF;
-            stack[sp] = pc; // saves the current address to the stack
-            ++sp;           // increament stack pointer
-            pc = nnn;       // set the program counter to the address
+            stack[sp] = pc;
+            ++sp;
+            pc = nnn;
             std::cout << "Instruction: CALL " << intToHex(nnn) << '\n';
             break;
         }
@@ -180,9 +195,9 @@ namespace chip8
 
         case 0x6000: // 6XNN - LD Vx, NN - Loads NN value to Vx register DOES SET
         {
-            std::uint8_t x = (opcode & 0x0F00) >> 8; // takes the no of the register
-            std::uint8_t nn = opcode & 0x00FF;       // takes the NN
-            V[x] = nn;                               // sets the value to the register
+            std::uint8_t x = (opcode & 0x0F00) >> 8;
+            std::uint8_t nn = opcode & 0x00FF;
+            V[x] = nn;
             std::cout << "Instruction: LD V" << +x << ", " << +nn << '\n';
             pc += 2;
             break;
@@ -192,7 +207,7 @@ namespace chip8
         {
             std::uint8_t x = (opcode & 0x0F00) >> 8;
             std::uint8_t nn = opcode & 0x00FF;
-            V[x] += nn; // CHANGES the value of the register
+            V[x] += nn;
             std::cout << "Instruction: ADD V" << +x << ", " << +nn << '\n';
             pc += 2; //
             break;
@@ -239,8 +254,8 @@ namespace chip8
             case 0x4: // 8XY4 - ADD Vx, Vy - adds the value of Vy to Vx register and sets VF if there is a carry
             {
                 std::uint16_t sum = V[x] + V[y];
-                V[0xF] = (sum > 0xFF) ? 1 : 0; // sets the carry flag
-                V[x] = sum & 0xFF;             // sets the value of the register
+                V[0xF] = (sum > 0xFF) ? 1 : 0;
+                V[x] = sum & 0xFF;
                 std::cout << "Instruction: ADD V" << +x << ", V" << +y << '\n';
                 pc += 2;
                 break;
@@ -248,8 +263,8 @@ namespace chip8
 
             case 0x5: // 8XY5 - SUB Vx, Vy - subtracts the value of Vy from Vx register and sets VF if there is no borrow
             {
-                V[0xF] = (V[x] > V[y]) ? 1 : 0; // sets the borrow flag
-                V[x] -= V[y];                   // sets the value of the register
+                V[0xF] = (V[x] > V[y]) ? 1 : 0;
+                V[x] -= V[y];
                 std::cout << "Instruction: SUB V" << +x << ", V" << +y << '\n';
                 pc += 2;
                 break;
@@ -257,8 +272,8 @@ namespace chip8
 
             case 0x6: // 8XY6 - SHR Vx {, Vy} - shifts Vx register right by 1 bit and sets VF to the least significant bit of Vx
             {
-                V[0xF] = V[x] & 0x1; // sets the least significant bit of Vx to VF
-                V[x] >>= 1;          // shifts the value of the register right by 1 bit
+                V[0xF] = V[x] & 0x1;
+                V[x] >>= 1;
                 std::cout << "Instruction: SHR V" << +x << '\n';
                 pc += 2;
                 break;
@@ -266,8 +281,8 @@ namespace chip8
 
             case 0x7: // 8XY7 - SUBN Vx, Vy - subtracts the value of Vx from Vy register and sets VF if there is no borrow
             {
-                V[0xF] = (V[y] > V[x]) ? 1 : 0; // sets the borrow flag
-                V[y] -= V[x];                   // sets the value of the register
+                V[0xF] = (V[y] > V[x]) ? 1 : 0;
+                V[y] -= V[x];
                 std::cout << "Instruction: SUBN V" << +x << ", V" << +y << '\n';
                 pc += 2;
                 break;
@@ -275,8 +290,8 @@ namespace chip8
 
             case 0xE: // 8XYE - SHL Vx {, Vy} - shifts Vx register left by 1 bit and sets VF to the most significant bit of Vx
             {
-                V[0xF] = (V[x] & 0x80) >> 7; // sets the most significant bit of Vx to VF
-                V[x] <<= 1;                  // shifts the value of the register left by 1 bit
+                V[0xF] = (V[x] & 0x80) >> 7;
+                V[x] <<= 1;
                 std::cout << "Instruction: SHL V" << +x << '\n';
                 pc += 2;
                 break;
@@ -321,17 +336,17 @@ namespace chip8
         case 0xB000: // BNNN - JP V0, NNN - jumps to the address NNN + V0
         {
             std::uint16_t nnn = opcode & 0x0FFF;
-            pc = V[0] + nnn; // jumps to the address NNN + V0
+            pc = V[0] + nnn;
             std::cout << "Instruction: JP " << intToHex(nnn) << '\n';
             break;
         }
 
         case 0xC000: // CXNN - RND Vx, NN - generates a random number and ANDs it with NN
         {
-            std::uint8_t x = (opcode & 0x0F00) >> 8; // takes the no of the register
-            std::uint8_t nn = opcode & 0x00FF;       // takes the NN
-            std::uint8_t randomByte = rand() % 256;  // generates a random byte from 0 to 255
-            V[x] = randomByte & nn;                  // sets the value to the register - allows to control the range of generation
+            std::uint8_t x = (opcode & 0x0F00) >> 8;
+            std::uint8_t nn = opcode & 0x00FF;
+            std::uint8_t randomByte = rand() % 256;
+            V[x] = randomByte & nn;
             std::cout << "Instruction: RND V" << +x << ", " << +nn << '\n';
             pc += 2;
             break;
@@ -344,7 +359,7 @@ namespace chip8
             std::uint8_t height = opcode & 0x000F;
             std::uint8_t pixel;
 
-            V[0xF] = 0; // VF = 0 (flaga kolizji)
+            V[0xF] = 0;
 
             for (int yline = 0; yline < height; yline++)
             {
@@ -358,9 +373,9 @@ namespace chip8
                         int index = yPos * 64 + xPos;
 
                         if (gfx[index] == 1)
-                            V[0xF] = 1; // kolizja!
+                            V[0xF] = 1;
 
-                        gfx[index] ^= 1; // rysowanie XOR
+                        gfx[index] ^= 1;
                     }
                 }
             }
@@ -459,7 +474,7 @@ namespace chip8
 
                 if (!keyPressed)
                 {
-                    return; // wait for a key press
+                    return;
                 }
 
                 pc += 2;
@@ -501,9 +516,9 @@ namespace chip8
             case 0x33: // FX33 - LD B, Vx - stores the binary-coded decimal representation of Vx in memory locations I, I+1, and I+2
             {
                 std::cout << "Instruction: LD B, V" << +x << '\n';
-                memory[I] = V[x] / 100;           // hundreds place
-                memory[I + 1] = (V[x] / 10) % 10; // tens place
-                memory[I + 2] = V[x] % 10;        // ones place
+                memory[I] = V[x] / 100;
+                memory[I + 1] = (V[x] / 10) % 10;
+                memory[I + 2] = V[x] % 10;
                 pc += 2;
                 break;
             }
