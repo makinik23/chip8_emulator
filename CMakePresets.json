@@ -4,7 +4,6 @@
         {
             "name": "mingw64",
             "displayName": "MSYS2 MinGW64 Toolchain",
-            "description": "Używa CMake i GCC z MSYS2/mingw64",
             "generator": "MinGW Makefiles",
             "binaryDir": "${sourceDir}/build",
             "cacheVariables": {

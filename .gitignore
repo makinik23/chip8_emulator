@@ -11,6 +11,7 @@ tools/
 # === VS Code ===
 .vscode/
 *.code-workspace
+CMakePresets.json
 
 # === Windows system ===
 Thumbs.db
@@ -28,6 +29,7 @@ roms/
 docs/
 docs/html/
 docs/latex/
+
 Doxyfile
 
 # === Compiled binary ===
