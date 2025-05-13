@@ -2,7 +2,7 @@
 
 A simple yet fully functional emulator for the classic CHIP-8, written in C++ with SDL2 support.
 
-## 🧠 About
+## About
 
 CHIP-8 is a virtual machine developed in the 1970s for learning and writing simple video games. This emulator includes:
 
@@ -12,19 +12,19 @@ CHIP-8 is a virtual machine developed in the 1970s for learning and writing simp
 - Sound support via SDL2
 - Timer synchronization at ~60Hz
 
-## ⚙️ Requirements
+## Requirements
 
 - C++17 or later
 - SDL2 library (headers + binaries)
 - CMake 3.10+
 
-## 📆 Config
+## Config
 
-- Configure ```CMakePresets.json``` to Your Liking
+- Configure ```CMakePresets.json``` to Your liking
 - Feel free to change ```CMakeLists``` files if needed
 - Build the project
 
-## ▶️ Running
+## Running
 
 - Create ```roms``` folder
 - Download sample ```.ch8``` files
@@ -33,7 +33,7 @@ CHIP-8 is a virtual machine developed in the 1970s for learning and writing simp
 ./build/chip8_emulator.exe ./roms/<ROM_file_to_be_loaded>.ch8
 ```
 
-## ⌨️ Key Mapping
+## Key Mapping
 
 CHIP-8       | Keyboard
 ------------ | ---------

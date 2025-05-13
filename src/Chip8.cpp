@@ -543,7 +543,7 @@ namespace chip8
                 {
                     V[i] = memory[I + i];
                 }
-                // I unchanged
+
                 pc += 2;
                 break;
             }
